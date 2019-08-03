@@ -1,0 +1,4 @@
+build/
+v-env/*
+v-env/
+AWSinfo/
