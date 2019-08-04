@@ -39,7 +39,7 @@ def manageServer(client):
             javaServerStatusMessage = "ERROR Game server not started"
             if "Server Successfully" in serverStartMessage:
                 javaServerStatusMessage = startGameServer(serverStartMessage)
-            serverStartMessage = serverStatusMessage + " " + javaServerStatusMessage
+            serverStatusMessage = serverStatusMessage + " " + javaServerStatusMessage
         elif stateName == 'running':
             serverStatusMessage = 'IP: ' + instance['PublicIpAddress']
         else:
