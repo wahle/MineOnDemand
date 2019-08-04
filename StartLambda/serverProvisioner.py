@@ -100,7 +100,8 @@ def route53Redirect(ipAddress):
             ]
         }
     )
-    route53UpdateStatus = dnsResponse.ChangeInfo.status
+    route53Info = dnsResponse['ChangeInfo']
+    route53UpdateStatus = route53Info['Status']
     serverStatusMessage = 'Route53 redirect status:' + route53UpdateStatus
     return serverStatusMessage
 
