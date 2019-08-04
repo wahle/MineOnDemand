@@ -125,7 +125,7 @@ def startGameServer(ipAddress):
 
         # Execute a command(cmd) after connecting/ssh to an instance
         #Vanilla Command:
-        stdin, stdout, stderr = sshClient.exec_command("screen -dmS minecraft bash -c 'sudo java -Xmx4G -jar server.jar nogui'")
+        stdin, stdout, stderr = sshClient.exec_command("screen -dmS minecraft bash -c 'sudo java -Xmx2G -jar server.jar nogui'")
         #Modded Command: 
         # stdin, stdout, stderr = sshClient.exec_command("screen -dmS minecraft bash -c 'sudo java -Xmx4G ${JAVA_ARGS} -jar forge-1.12.2-14.23.5.2836-universal.jar nogui'")
         print("COMMAND EXECUTED")
