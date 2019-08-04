@@ -110,8 +110,8 @@ def pullFromS3(fileToCopy, bucket, localName):
     print("File to Download {}".format(localName))
     s3 = boto3.client('s3')
     s3.download_file(bucket, fileToCopy, "/tmp/{}".format(localName))
-    print("tmp/{}".format(localName))
-    return "tmp/{}".format(localName)
+    print("/tmp/{}".format(localName))
+    return "/tmp/{}".format(localName)
 
 def startGameServer(ipAddress):
     sshkey = pullFromS3(os.getenv('serverSshKey'), os.getenv('serverBucket'), 'serverPemKey.pem')
