@@ -68,7 +68,7 @@ def startServer(client):
         stateCode = state['Code']
 
         print("\nSERVER INSTANCES\n")
-        print(response.Reservations[0].Instances)
+        print(instances)
         print("\n")
         
     ipAddress = instance['PublicIpAddress']
