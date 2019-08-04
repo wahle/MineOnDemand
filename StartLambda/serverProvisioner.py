@@ -107,12 +107,15 @@ def route53Redirect(ipAddress):
     return serverStatusMessage
 
 def pullFromS3(fileToCopy, bucket, localName):
+    print("File to Download {}".format(localName))
     s3 = boto3.client('s3')
-    s3.download_file(bucket, fileToCopy, "tmp/{}".format(localName))
+    s3.download_file(bucket, fileToCopy, "/tmp/{}".format(localName))
+    print("tmp/{}".format(localName))
     return "tmp/{}".format(localName)
 
 def startGameServer(ipAddress):
     sshkey = pullFromS3(os.getenv('serverSshKey'), os.getenv('serverBucket'), 'serverPemKey.pem')
+    print(sshkey)
     key = paramiko.RSAKey.from_private_key_file(sshkey)
     sshClient = paramiko.SSHClient()
     sshClient.set_missing_host_key_policy(paramiko.AutoAddPolicy())
