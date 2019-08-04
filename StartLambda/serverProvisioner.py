@@ -106,22 +106,21 @@ def route53Redirect(ipAddress):
     serverStatusMessage = 'Route53 redirect status:' + route53UpdateStatus
     return serverStatusMessage
 
-def pullFromS3(fileToCopy, bucket):
+def pullFromS3(fileToCopy, bucket, localName):
     s3 = boto3.client('s3')
-    response = s3.get_object(Bucket=bucket, Key=fileToCopy)
-    fileFromS3 = response['Body'].read().decode('utf-8')
-    return fileFromS3
+    s3.download_file(bucket, fileToCopy, "tmp/{}".format(localName))
+    return "tmp/{}".format(localName)
 
 def startGameServer(ipAddress):
-    sshkey = pullFromS3(os.getenv('serverSshKey'), os.getenv('serverBucket'))
-    key = paramiko.RSAKey.from_private_key(sshkey)
+    sshkey = pullFromS3(os.getenv('serverSshKey'), os.getenv('serverBucket'), 'serverPemKey.pem')
+    key = paramiko.RSAKey.from_private_key_file(sshkey)
     sshClient = paramiko.SSHClient()
     sshClient.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-        # Connect/ssh to an instance
+    # Connect/ssh to an instance
     try:
         # Here 'ubuntu' is user name and 'instance_ip' is public IP of EC2
-        sshClient.connect(hostname=ipAddress, username="ubuntu", pkey=sshkey)
+        sshClient.connect(hostname=ipAddress, username="ubuntu", pkey=key)
 
         # Execute a command(cmd) after connecting/ssh to an instance
         #Vanilla Command:
