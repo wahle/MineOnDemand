@@ -36,7 +36,8 @@ def manageServer(client):
             #Redirect Route53 to new host
             serverRoutingMessage = route53Redirect(serverStartMessage)
             serverStatusMessage = "Server Successfully Started IP: " + serverStartMessage + serverRoutingMessage
-            if 'Server Succes' in serverStartMessage:
+            javaServerStatusMessage = "ERROR Game server not started"
+            if "Server Successfully" in serverStartMessage:
                 javaServerStatusMessage = startGameServer(serverStartMessage)
             serverStartMessage = serverStatusMessage + " " + javaServerStatusMessage
         elif stateName == 'running':
