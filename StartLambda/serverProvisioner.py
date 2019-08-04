@@ -37,7 +37,7 @@ def manageServer(client):
             serverRoutingMessage = route53Redirect(serverStartMessage)
             serverStatusMessage = "Server Successfully Started IP: " + serverStartMessage + serverRoutingMessage
             javaServerStatusMessage = "ERROR Game server not started"
-            if "Server Successfully" in serverStartMessage:
+            if "Successfully" in serverStatusMessage:
                 javaServerStatusMessage = startGameServer(serverStartMessage)
             serverStatusMessage = serverStatusMessage + " " + javaServerStatusMessage
         elif stateName == 'running':
@@ -134,4 +134,5 @@ def startGameServer(ipAddress):
         return "Game Client Starting"
 
     except Exception as e:
-        return 'ERROR running Game server commands' + e
+        failMessage = "ERROR running Game server commands" + e
+        return failMessage
