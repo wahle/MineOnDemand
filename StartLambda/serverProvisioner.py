@@ -114,7 +114,7 @@ def pullFromS3(fileToCopy, bucket):
 
 def startGameServer(ipAddress):
     sshkey = pullFromS3(os.getenv('serverSshKey'), os.getenv('serverBucket'))
-    key = paramiko.RSAKey.from_string(sshkey)s
+    key = paramiko.RSAKey.from_string(sshkey)
     sshClient = paramiko.SSHClient()
     sshClient.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
