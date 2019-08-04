@@ -42,7 +42,7 @@ def manageServer(client):
         elif stateName == 'running':
             serverStatusMessage = 'IP: ' + instance['PublicIpAddress']
         else:
-            serverStatusMessage = 'ERROR ec2 instance either not found or in a bad state. Needs admin attention.'
+            serverStatusMessage = 'ERROR ec2 instance either not found or in a bad state. Needs admin attention. ' + stateName
     return serverStatusMessage
 
 def startServer(client):
@@ -71,7 +71,7 @@ def startServer(client):
         print(response.Reservations[0].Instances)
         print("\n")
         
-    ipAddress = response.Reservations[0].Instances[0].PublicIpAddress
+    ipAddress = instance['PublicIpAddress']
     serverStatusMessage = ipAddress
 
     return serverStatusMessage
