@@ -134,5 +134,5 @@ def startGameServer(ipAddress):
         return "Game Client Starting"
 
     except Exception as e:
-        failMessage = "ERROR running Game server commands" + e
+        failMessage = "ERROR running Game server commands" + str(e)
         return failMessage
