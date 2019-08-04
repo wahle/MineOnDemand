@@ -6,7 +6,7 @@ import paramiko
 
 
 def lambda_handler(event, context):
-    if event("serverPassword") == os.getenv("MinePass"):
+    if event["serverPassword"] == os.getenv("MinePass"):
         ec2 = boto3.client('ec2', region_name=os.getenv("Region"))
         statusMessage = manageServer(ec2)
         print(statusMessage)
