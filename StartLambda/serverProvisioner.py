@@ -131,6 +131,7 @@ def startGameServer(ipAddress):
         print("COMMAND EXECUTED")
         # close the client connection once the job is done
         sshClient.close()
+        return "Game Client Starting"
 
     except:
         return 'ERROR running Game server commands'
