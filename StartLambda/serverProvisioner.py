@@ -59,7 +59,7 @@ def startServer(client):
         print(str(response))
         print('\n')
 
-        response = client.describe_instances(InstanceIds = instanceIds)
+        response = client.describe_instances(InstanceIds = instance_id)
         reservations = response['Reservations']
         reservation = reservations[0]
         instances = reservation['Instances']
