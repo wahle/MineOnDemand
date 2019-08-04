@@ -130,7 +130,10 @@ def startGameServer(ipAddress):
         stdin, stdout, stderr = sshClient.exec_command("screen -dmS minecraft bash -c 'sudo java -Xmx2G -jar server.jar nogui'")
         #Modded Command: 
         # stdin, stdout, stderr = sshClient.exec_command("screen -dmS minecraft bash -c 'sudo java -Xmx4G ${JAVA_ARGS} -jar forge-1.12.2-14.23.5.2836-universal.jar nogui'")
-        print("COMMAND EXECUTED")
+        stdin.flush()
+        data = stdout.read().splitlines()
+        for line in data:
+            print(line)
         # close the client connection once the job is done
         sshClient.close()
         return "Game Client Starting"
