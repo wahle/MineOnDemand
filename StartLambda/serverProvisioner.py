@@ -32,6 +32,8 @@ def manageServer(client):
             #Redirect Route53 to new host
             serverRoutingMessage = route53Redirect(serverStartMessage)
             serverStatusMessage = "Server Successfully Started IP: " + serverStartMessage + serverRoutingMessage
+            if 'Server Succes' in serverStartMessage:
+                javaServerStatusMessage = startGameServer(serverStartMessage)
         elif stateName == 'running':
             serverStatusMessage = 'IP: ' + instance['PublicIpAddress']
         else:
@@ -90,7 +92,33 @@ def route53Redirect(ipAddress):
     )
     route53UpdateStatus = dnsResponse.ChangeInfo.status
     serverStatusMessage = 'Route53 redirect status:' + route53UpdateStatus
-
     return serverStatusMessage
 
+def pullFromS3(fileToCopy, bucket):
+    s3 = boto3.client('s3')
+    response = s3.get_object(Bucket=bucket, Key=fileToCopy)
+    fileFromS3 = response['Body'].read().decode('utf-8')
+    return fileFromS3
 
+def startGameServer(ipAddress):
+    sshkey = pullFromS3(os.getenv('serverSshKey'), os.getenv('serverBucket'))
+    key = paramiko.RSAKey.from_private_key_file(sshkey)
+    sshClient = paramiko.SSHClient()
+    sshClient.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+        # Connect/ssh to an instance
+    try:
+        # Here 'ubuntu' is user name and 'instance_ip' is public IP of EC2
+        sshClient.connect(hostname=instanceIp, username="ubuntu", pkey=key)
+
+        # Execute a command(cmd) after connecting/ssh to an instance
+        #Vanilla Command:
+        stdin, stdout, stderr = sshClient.exec_command("screen -dmS minecraft bash -c 'sudo java -Xmx4G -jar server.jar nogui'")
+        #Modded Command: 
+        # stdin, stdout, stderr = sshClient.exec_command("screen -dmS minecraft bash -c 'sudo java -Xmx4G ${JAVA_ARGS} -jar forge-1.12.2-14.23.5.2836-universal.jar nogui'")
+        print("COMMAND EXECUTED")
+        # close the client connection once the job is done
+        sshClient.close()
+
+    except:
+        return 'ERROR running Game server commands'
