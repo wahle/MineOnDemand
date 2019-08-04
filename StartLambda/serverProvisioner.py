@@ -16,9 +16,12 @@ def lambda_handler(event, context):
 def manageServer(client):
     serverStatusMessage = 'ERROR unable to interact with server. Please tell someone who cares'
     instance_id = [os.getenv("InstanceID")]
-
     response = client.describe_instances(InstanceIds = instance_id)
-    instances = response.Reservations[0].Instances
+
+    reservations = response['Reservations']
+    reservation = reservations[0]
+    instances = reservation['Instances']
+    
     print("\nSERVER INSTANCES\n")
     print(instances)
     print("\n")
@@ -35,6 +38,7 @@ def manageServer(client):
             serverStatusMessage = "Server Successfully Started IP: " + serverStartMessage + serverRoutingMessage
             if 'Server Succes' in serverStartMessage:
                 javaServerStatusMessage = startGameServer(serverStartMessage)
+            serverStartMessage = serverStatusMessage + " " + javaServerStatusMessage
         elif stateName == 'running':
             serverStatusMessage = 'IP: ' + instance['PublicIpAddress']
         else:
@@ -55,9 +59,14 @@ def startServer(client):
         print(str(response))
         print('\n')
 
-        response = client.describe_instances(InstanceIds = instance_id)
-        stateCode = response.Reservations[0].Instances[0].State.Code
-        
+        response = client.describe_instances(InstanceIds = instanceIds)
+        reservations = response['Reservations']
+        reservation = reservations[0]
+        instances = reservation['Instances']
+        instance = instances[0]
+        state = instance['State']
+        stateCode = state['Code']
+
         print("\nSERVER INSTANCES\n")
         print(response.Reservations[0].Instances)
         print("\n")
