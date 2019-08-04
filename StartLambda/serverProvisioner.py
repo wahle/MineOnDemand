@@ -114,14 +114,14 @@ def pullFromS3(fileToCopy, bucket):
 
 def startGameServer(ipAddress):
     sshkey = pullFromS3(os.getenv('serverSshKey'), os.getenv('serverBucket'))
-    #key = paramiko.RSAKey.from_private_key_file(sshkey)
+    key = paramiko.RSAKey.from_string(sshkey)s
     sshClient = paramiko.SSHClient()
     sshClient.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
         # Connect/ssh to an instance
     try:
         # Here 'ubuntu' is user name and 'instance_ip' is public IP of EC2
-        sshClient.connect(hostname=ipAddress, username="ubuntu", pkey=sshkey)
+        sshClient.connect(hostname=ipAddress, username="ubuntu", pkey=key)
 
         # Execute a command(cmd) after connecting/ssh to an instance
         #Vanilla Command:
