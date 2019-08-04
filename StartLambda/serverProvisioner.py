@@ -6,11 +6,12 @@ import paramiko
 
 
 def lambda_handler(event, context):
+    statusMessage = "Wrong Password Given"
     if event["serverPassword"] == os.getenv("MinePass"):
         ec2 = boto3.client('ec2', region_name=os.getenv("Region"))
         statusMessage = manageServer(ec2)
         print(statusMessage)
-        return statusMessage
+    return statusMessage
 
 def manageServer(client):
     serverStatusMessage = 'ERROR unable to interact with server. Please tell someone who cares'
