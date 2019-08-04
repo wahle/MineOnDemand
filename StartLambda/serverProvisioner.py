@@ -121,7 +121,7 @@ def startGameServer(ipAddress):
         # Connect/ssh to an instance
     try:
         # Here 'ubuntu' is user name and 'instance_ip' is public IP of EC2
-        sshClient.connect(hostname=instanceIp, username="ubuntu", pkey=key)
+        sshClient.connect(hostname=ipAddress, username="ubuntu", pkey=key)
 
         # Execute a command(cmd) after connecting/ssh to an instance
         #Vanilla Command:
